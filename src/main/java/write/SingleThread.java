@@ -10,7 +10,7 @@ import java.nio.channels.FileChannel;
  * Created by lds on 2019-11-14.
  */
 public class SingleThread {
-    public void write(String fileName,int bufferSize,long fileSize) throws FileNotFoundException {
+    private void write(String fileName,int bufferSize,int writeCount) throws FileNotFoundException {
         //创建文件通道
         FileOutputStream outputStream = new FileOutputStream(fileName);
         FileChannel out = outputStream.getChannel();
@@ -23,8 +23,7 @@ public class SingleThread {
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(bytes.length);
         byteBuffer.put(bytes);
         byteBuffer.flip();
-        //计算写入次数
-        int writeCount = (int)(fileSize / bufferSize);
+
         //执行写入
         long start = System.currentTimeMillis();
 
@@ -44,7 +43,7 @@ public class SingleThread {
     public static void main(String[] args) {
         SingleThread singleThread = new SingleThread();
         try {
-            singleThread.write("singleThread_test",4*1024,8*1024*1024*1024);
+            singleThread.write("file\\write\\singleThread_test",4*1024,2*1024*1024);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
